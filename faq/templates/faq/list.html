@@ -1,0 +1,77 @@
+{% extends 'faq/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>{{ list_title }}</h1>
+            <span class="subheading">{{ user_query }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {% include 'faq/search_form.html' %}
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        {% if questions|length_is:"0" %}
+
+          <h1>
+            Aucune question contenant les termes spécifiés n'a été trouvée. Réessayez la recherche en utilisant d'autres termes.
+          </h1>
+
+        {% else %}
+
+          {% for answer in answers %}
+
+            <div class="post-preview">
+              <a href="{% url 'faq:answer_detail' answer_id=answer.id}">
+                <h2 class="post-title">
+                  {{ answer.title }}
+                </h2>
+                <h3 class="post-subtitle">
+                  {{ answer.content|slice:":400"|safe }}...
+                </h3>
+              </a>
+            </div>
+            <hr>
+
+          {% endfor %}
+
+          {% if paginate %}
+
+            <!-- Pager -->
+            <div class="clearfix">
+              <ul class="pager">
+              {% if questions.has_next %}
+                  <li><a href="?page={{ questions.next_page_number }}" class="btn btn-primary float-right">Réponses suivantes &rarr;</a></li>
+              {% endif %}
+              {% if questions.has_previous %}
+                  <li><a href="?page={{ questions.previous_page_number }}" class="btn btn-primary float-left">Réponses précédentes &larr;</a></li>
+              {% endif %}
+              </ul>
+            </div>
+
+          {% endif %}
+
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+{% endblock %}

@@ -3,27 +3,55 @@ from django.db import models
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(
+        "mot",
+        max_length=100,
+        unique=True
+    )
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "mot-clé"
+        verbose_name_plural = "mots-clé"
+
 
 class Answer(models.Model):
-    title = models.CharField(max_length=100, unique=True, default="Ex: 'Combien font deux et deux ?'")
-    content = models.TextField(default="Ex: 'Deux et deux font quatre'", blank=True)
-    upload_content = RichTextUploadingField(blank=True)
-    tags = models.ManyToManyField(Tag, related_name='question', blank=True)
+    title = models.CharField(
+        "question posée",
+        max_length=100,
+        unique=True,
+        default="Ex: 'Combien font deux et deux ?'"
+    )
+    upload_content = RichTextUploadingField(
+        "réponse apportée",
+        default="Ex: 'Deux et deux font quatre'",
+        blank=True
+    )
+    tags = models.ManyToManyField(
+        Tag,
+        related_name="réponse",
+        blank=True,
+        verbose_name="mots-clé"
+    )
     user_approval = models.IntegerField(default=0)
-    primary_key = True
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "réponse"
+        verbose_name_plural = "réponses"
+
 
 class Question(models.Model):
-    content = models.TextField()
-    mail = models.EmailField(blank=True)
+    content = models.TextField("question utilisateur")
+    mail = models.EmailField("mail utilisateur", blank=True)
 
     def __str__(self):
         return self.content
+
+    class Meta:
+        verbose_name = "question"
+        verbose_name_plural = "questions"

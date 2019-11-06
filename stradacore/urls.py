@@ -23,4 +23,5 @@ urlpatterns = [
     path('faq/', include(('faq.urls', 'faq'), namespace="faq")),
     path('recipes/', include(('recipes.urls', 'recipes'), namespace="recipes")),
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
