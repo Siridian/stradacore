@@ -1,0 +1,70 @@
+{% extends 'faq/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>{{ answer.title }}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Answer Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {{ answer.upload_content }}
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+
+  <!-- Question Form -->
+  <h4 class="text-center question_tag">Aucune article ne semble répondre à votre question ?</h4>
+  <p style="margin-bottom: 20px;">Envoyez votre question en essayant d'être le plus spécifique possible. Vous pouvez préciser votre adresse mail pour être notifié.e dès que la réponse sera en ligne.</p>
+  <form class="form-inline" action="{% url 'faq:answer_detail' answer_id=answer.id %}" method="post">
+    {% csrf_token %}
+    <!-- <input type="hidden" class="hidden" value="question_id" name="question_id"> -->
+
+    <div class="form-group {% if form.content.errors %}has-warning has-feedback{% endif %}" >
+      <label for="{{ form.content.id_for_label }}" class="control-label">Votre question</label>
+      <p>
+      {{ form.content }}
+      </p>
+    </div>
+    <p></p>
+    <div class="form-group {% if form.email.errors %}has-warning has-feedback{% endif %}">
+      <label for="{{ form.mail.id_for_label }}" class="control-label">Votre adresse email <em>(facultatif)</em></label>
+      <p>
+      {{ form.mail }}
+      </p>
+    </div>
+    <p>
+    <button type="submit" name="action" value="question" class="btn btn-success">Envoyer</button>
+    </p>
+  </form>
+  {% if errors %}
+    <div>
+      {% for key, error in errors %}
+      {% autoescape off %}
+        {{ error }}
+      {% endautoescape %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <hr>
+
+{% endblock %}

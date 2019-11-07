@@ -2,11 +2,13 @@
 The views of the faq app handles core features (such as index page)
 as well as the search engine and detailed page of the Answers
 """
-
-from django.shortcuts import render
+from django.db import IntegrityError
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.mail import send_mail
 
+from faq.forms import QuestionForm, ParagraphErrorList
+from stradacore import settings
 from .models import Answer, Tag, Question
 
 
@@ -88,5 +90,46 @@ def answer_search(request):
     return render(request, 'faq/list_answer.html', context)
 
 
-def answer_detail(request):
-    pass
+def answer_detail(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    form = QuestionForm()
+
+    context = {
+        "answer": answer,
+        "form": form,
+    }
+
+    if request.method == 'POST':
+        try:
+            form = QuestionForm(request.POST, error_class=ParagraphErrorList)
+            if form.is_valid():
+                content = form.cleaned_data['content']
+                mail = form.cleaned_data['mail']
+                Question.objects.create(
+                    content=content,
+                    mail=mail
+                )
+
+                mail_content = "Un utilisateur du service Question-Réponse a posé une question n'ayant pas encore de réponse : \n \n" + content + "\n \n Vous pouvez la retrouver sur l'interface d'administration du site."
+
+                send_mail(
+                    "Nouvelle question posée sur astradadiucore.corsica",
+                    mail_content,
+                    'versustesting@gmail.com',
+                    settings.NOTIFIED_TARGET
+                )
+
+                context['content'] = content
+                context['mail'] = mail
+
+                return render(request, 'faq/question_confirm.html', context)
+
+            else:
+                context['errors'] = form.errors.items()
+                form = QuestionForm()
+
+        except IntegrityError:
+            form.errors['internal'] = "Une erreur interne est survenue. Merci de réessayer."
+
+    context['form'] = form
+    return render(request, 'faq/answer_detail.html', context)

@@ -1,0 +1,14 @@
+{% extends 'faq/base.html' %}
+
+{% block content %}
+
+<hr>
+<h3 class="intro-text text-center">Votre demande a bien été prise en compte</h3>
+<hr class="detail-separator">
+<p>Votre question <em>"{{content}}"</em> a été enregistrée et sera traitée sous peu.
+{% if mail %}Une fois la réponse mise en ligne, un mail de notification sera envoyé à l'adresse {{mail}}.{% endif %}
+<p>
+
+{% include 'faq/search_form.html' %}
+
+{% endblock %}

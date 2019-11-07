@@ -37,9 +37,9 @@
           {% for answer in answers %}
 
             <div class="post-preview">
-              <a href="{% url 'faq:answer_detail' answer_id=answer.id}">
+              <a href="{% url 'faq:answer_detail' answer_id=answer.id %}">
                 <h2 class="post-title">
-                  {{ answer.title }}
+                    {{ answer.title }}
                 </h2>
                 <h3 class="post-subtitle">
                   {{ answer.content|slice:":400"|safe }}...
