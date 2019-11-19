@@ -2,13 +2,29 @@
 
 {% block content %}
 
-<hr>
-<h3 class="intro-text text-center">Votre demande a bien été prise en compte</h3>
-<hr class="detail-separator">
-<p>Votre question <em>"{{content}}"</em> a été enregistrée et sera traitée sous peu.
-{% if mail %}Une fois la réponse mise en ligne, un mail de notification sera envoyé à l'adresse {{mail}}.{% endif %}
-<p>
-
 {% include 'faq/search_form.html' %}
+<header class="masthead" style="background-image: url('{% static 'faq/img/about-none.jpg' %}')">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>Votre demande a bien été prise en compte</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      Votre question <em>"{{content}}"</em> a été enregistrée et sera traitée sous peu.
+      {% if mail %}Une fois la réponse mise en ligne, un mail de notification sera envoyé à l'adresse {{mail}}.{% endif %}
+    </div>
+  </div>
+</div>
+
+<hr>
 
 {% endblock %}

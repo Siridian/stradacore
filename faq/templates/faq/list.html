@@ -19,10 +19,14 @@
     </div>
   </header>
 
-  {% include 'faq/search_form.html' %}
 
-  <!-- Main Content -->
+
+
   <div class="container">
+    <div class="row">
+        {% include 'faq/search_form.html' %}
+    </div>
+
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
 
@@ -41,9 +45,9 @@
                 <h2 class="post-title">
                     {{ answer.title }}
                 </h2>
-                <h3 class="post-subtitle">
-                  {{ answer.content|slice:":400"|safe }}...
-                </h3>
+                <p class="post-subtitle">
+                  {{ answer.upload_content|slice:":400"|safe }}
+                </p>
               </a>
             </div>
             <hr>
