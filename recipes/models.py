@@ -32,6 +32,7 @@ class Ingredient(models.Model):
         max_length=50,
         unique=True
     )
+    unit = models.CharField("Unité (facultatif)", max_length=30,  blank=True)
     type = models.ForeignKey(IngredientType, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -63,7 +64,7 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    quantity = models.CharField(max_length=30, blank=True)
+    quantity = models.FloatField("Quantité", blank=True, null=True)
 
     class Meta:
         verbose_name = "association ingrédients-recettes"

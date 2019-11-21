@@ -1,0 +1,8 @@
+.side-tags{
+    margin-top: 1em;
+    border: 2px solid #0085a1;
+    height: 0%;
+    border-radius: 10px;
+}
+
+img { max-width: 100%; height: auto; }
