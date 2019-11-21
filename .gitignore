@@ -59,7 +59,7 @@ coverage.xml
 local_settings.py
 db.sqlite3
 staticfiles/
-settings/production.py
+production.py
 
 # Flask stuff:
 instance/
