@@ -31,7 +31,7 @@ class Answer(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
-        related_name="réponse",
+        related_name="answers",
         blank=True,
         verbose_name="mots-clé"
     )
