@@ -17,6 +17,11 @@ def index(request):
     return render(request, 'faq/index.html')
 
 
+def landing(request):
+    # Displays home page
+    return render(request, 'faq/faq_landing.html')
+
+
 def memo_list(request):
     answers = Answer.objects.filter(tags__name__icontains="memo")
     context = {
@@ -28,9 +33,7 @@ def memo_list(request):
 def answer_search(request):
     query = request.GET.get('query')
 
-    query.replace("+", " ")
-
-    processed_query = query.split()
+    processed_query = query.split("+")
 
     selected_list = []
 
@@ -84,7 +87,9 @@ def answer_search(request):
     context = {
         'answers': answers,
         'title': title,
-        'paginate': True
+        'paginate': True,
+        'tags': detected_tags,
+        'form': QuestionForm(),
     }
 
     return render(request, 'faq/list_answer.html', context)
