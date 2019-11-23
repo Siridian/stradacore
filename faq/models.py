@@ -55,3 +55,8 @@ class Question(models.Model):
     class Meta:
         verbose_name = "question"
         verbose_name_plural = "questions"
+
+
+class AnsweredQuestion(models.Model):
+    user_question = models.TextField()
+    validated_answer = models.ForeignKey(Answer, on_delete=models.CASCADE)

@@ -3,13 +3,14 @@ The views of the faq app handles core features (such as index page)
 as well as the search engine and detailed page of the Answers
 """
 from django.db import IntegrityError
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.mail import send_mail
 
 from faq.forms import QuestionForm, ParagraphErrorList
 from stradacore import settings
-from .models import Answer, Tag, Question
+from .models import Answer, Tag, Question, AnsweredQuestion
 
 
 def index(request):
@@ -32,6 +33,8 @@ def memo_list(request):
 
 def answer_search(request):
     query = request.GET.get('query')
+
+    request.session['last_query'] = query
 
     processed_query = query.split("+")
 
@@ -98,10 +101,13 @@ def answer_search(request):
 def answer_detail(request, answer_id):
     answer = get_object_or_404(Answer, id=answer_id)
     form = QuestionForm()
+    last_query = request.session.get('last_query', 'none')
 
     context = {
         "answer": answer,
         "form": form,
+        "answer_id": answer_id,
+        "last_query": last_query,
     }
 
     if request.method == 'POST':
@@ -138,3 +144,17 @@ def answer_detail(request, answer_id):
 
     context['form'] = form
     return render(request, 'faq/answer_detail.html', context)
+
+
+def answer_validate(request):
+    if request.method == 'POST':
+        user_question = request.POST.get("user_question")
+        validated_answer = Answer.objects.get(pk=request.POST.get("answer_id"))
+        AnsweredQuestion.objects.create(
+            user_question=user_question,
+            validated_answer=validated_answer
+        )
+        return HttpResponse('')
+
+    else :
+        pass

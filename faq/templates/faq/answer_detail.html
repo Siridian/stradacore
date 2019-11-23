@@ -35,6 +35,17 @@
   <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto text-center">
+          <button type="submit" class="btn btn-primary" id="satisfy">Cette réponse est utile !</button>
+          <button type="submit" class="btn btn-primary" id="unsatisfy">Ça ne répond pas à ma question.</button>
+          <p id="satisfied">Merci pour ce retour !</p>
+        </div>
+      </div>
+  </div>
+
+  <!-- Question Form -->
+  <div class="container" id="unsatisfied">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto text-center">
           <h4 class="text-center question_tag">Aucune article ne semble répondre à votre question ?</h4>
         </div>
         <div class="col-lg-8 col-md-10 mx-auto text-left">
@@ -46,5 +57,10 @@
   </div>
 
   <hr>
+
+<script>
+   var answer_id = {{ answer_id }};
+   var last_query = "{{ last_query }}";
+</script>
 
 {% endblock %}
