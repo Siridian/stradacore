@@ -1,10 +1,17 @@
-from django.db import models
+"""
+recipes/models.py contains the Recipe, Ingredient and IngredientType models.
+It also describes the RecipeIngredient association table.
+"""
 
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
 
 class IngredientType(models.Model):
+    """
+    A simple string to name an ingredient category,
+    later referenced in the Ingredient model
+    """
     name = models.TextField("type", unique=True)
 
     def __str__(self):
@@ -16,6 +23,10 @@ class IngredientType(models.Model):
 
 
 class Ingredient(models.Model):
+    """
+    The Ingredient model stores a name, unit and type as an ingredient
+    usable in the Recipe model
+    """
     name = models.CharField(
         "Nom de l'ingrédient",
         max_length=50,
@@ -33,6 +44,12 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    """
+    The Recipe model is key to the recipes app core feature.
+    It contains the name (string), directions (ckeditor upload field) and type
+    (one among three choices) and ingredients (through the RecipeIngredient
+    custom association table) of a recipe.
+    """
     FIRST_COURSE = "F"
     MAIN_COURSE = "M"
     DESSERT = "D"
@@ -63,6 +80,10 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
+    """
+    This model is a custom association table between Recipe and Ingredient,
+    that allows to store a specific quantity for each single association
+    """
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.FloatField("Quantité", blank=True, null=True)

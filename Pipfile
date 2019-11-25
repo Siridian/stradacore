@@ -11,6 +11,7 @@ psycopg2 = "*"
 django-ckeditor = "*"
 pillow = "*"
 gunicorn = "*"
+nltk = "*"
 
 [requires]
 python_version = "3.6"

@@ -1,9 +1,7 @@
 {% extends 'faq/base.html' %}
 
 {% block content %}
-
-{% include 'faq/search_form.html' %}
-<header class="masthead" style="background-image: url('{% static 'faq/img/about-none.jpg' %}')">
+<header class="masthead" style="background-image: url('faq/img/about-none.jpg')">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
@@ -21,6 +19,7 @@
     <div class="col-lg-8 col-md-10 mx-auto">
       Votre question <em>"{{content}}"</em> a été enregistrée et sera traitée sous peu.
       {% if mail %}Une fois la réponse mise en ligne, un mail de notification sera envoyé à l'adresse {{mail}}.{% endif %}
+      <a href="{% url 'faq:landing' %}">Retour à l'accueil</a>
     </div>
   </div>
 </div>

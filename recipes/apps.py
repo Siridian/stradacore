@@ -1,3 +1,7 @@
+"""
+Configuration file for the recipes app
+"""
+
 from django.apps import AppConfig
 
 

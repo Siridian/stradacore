@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-lg-8 col-md-10 mx-auto" >
-    <form action="{% url 'faq:answer_detail' answer_id=0 %}" method="post">
+    <form action="{% url 'faq:question_ask' %}" method="post">
       {% csrf_token %}
       <!-- <input type="hidden" class="hidden" value="question_id" name="question_id"> -->
         <div class="form-group {% if form.content.errors %}has-warning has-feedback{% endif %}" >

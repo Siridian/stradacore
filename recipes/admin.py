@@ -1,3 +1,9 @@
+"""
+recipes/admin.py registers the Recipe, Ingredient and IngredientType models,
+and adds Ingredients as Recipe inlines
+"""
+
+
 from django.contrib import admin
 
 from recipes.models import IngredientType, Ingredient, Recipe, RecipeIngredient

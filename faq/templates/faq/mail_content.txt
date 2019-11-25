@@ -1,0 +1,3 @@
+"Un utilisateur du service Question-Réponse a posé une question n'ayant pas encore de réponse : \n \n"
+{{ content }}
+"\n \n Vous pouvez la retrouver sur l'interface d'administration du site."

@@ -1,0 +1,49 @@
+{% extends 'faq/base.html' %}
+
+{% block content %}
+
+    <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Recettes</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto" >
+        <form action="{% url 'recipes:landing' %}" method="post">
+          {% csrf_token %}
+          <!-- <input type="hidden" class="hidden" value="question_id" name="question_id"> -->
+            <div class="form-group {% if form.meal_number.errors %}has-warning has-feedback{% endif %}" >
+              <label for="{{ form.meal_number.id_for_label }}" class="control-label">Combien de repas souhaitez vous préparer ?</label>
+              {{ form.meal_number }}
+            </div>
+            <div class="form-group {% if form.course_options.errors %}has-warning has-feedback{% endif %}">
+              <label for="{{ form.course_options.id_for_label }}" class="control-label">Quel(s) plat(s) doivent figurer au menu de chaque repas ?</label>
+              {{ form.course_options }}
+            </div>
+            <button type="submit" name="action" value="question" class="btn btn-success">C'est parti !</button>
+        </form>
+        {% if errors %}
+          <div>
+            {% for key, error in errors %}
+            {% autoescape off %}
+              {{ error }}
+            {% endautoescape %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
