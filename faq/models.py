@@ -4,24 +4,22 @@ faq/models.py contains the Tag, Answer and Question models, and their managers
 
 
 from ckeditor_uploader.fields import RichTextUploadingField
-from nltk.corpus import stopwords
 from django.db import models
 from collections import Counter
 
 
 class TagManager(models.Manager):
     # Manager for the tag model, contains the detect_tags method
-    def detect_tags(self, iterable):
+
+    def detect_tags(self, string):
         """
         Takes an iterable of several strings,
         and returns a list of tags contained in those strings
         """
         detected_tags = []
-        for word in iterable:
-            if word not in set(stopwords.words('french')):
-                for tag in self.all():
-                    if tag.name.lower() in word.lower():
-                        detected_tags.append(tag)
+        for tag in self.all():
+            if tag.name.lower() in string.lower():
+                detected_tags.append(tag)
         return detected_tags
 
 
@@ -34,7 +32,7 @@ class AnswerManager(models.Manager):
         """
         found_list = []
         for tag in iterable:
-            found_list.extend(self.filter(tags__name__icontains=tag))
+            found_list.extend(self.filter(tags=tag))
 
         sorted_found_list = []
         for answer in Counter(found_list).most_common():

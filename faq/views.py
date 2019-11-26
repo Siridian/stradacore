@@ -48,7 +48,7 @@ def answer_search(request):
         answer_list = Answer.objects.all()
 
     else:
-        detected_tags = Tag.objects.detect_tags(query.split("+"))
+        detected_tags = Tag.objects.detect_tags(query)
         answer_list = Answer.objects.find_and_sort(detected_tags)
         context['tags'] = detected_tags
 
