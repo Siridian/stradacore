@@ -1,13 +1,14 @@
 """
 This module tests the views and utils of the faq app
 """
-
+from django.core import mail
 from django.test import TestCase
+
+from faq.models import Question
 from faq.views import *
-from faq.utils import create_question
 
 
-class TestViewIndex(TestCase):
+class TestIndex(TestCase):
     # This class tests the index view
 
     def test_index_200(self):
@@ -18,7 +19,7 @@ class TestViewIndex(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class TestViewLanding(TestCase):
+class TestLanding(TestCase):
     # This class tests the landing view
 
     def test_landing_200(self):
@@ -29,7 +30,7 @@ class TestViewLanding(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class TestViewMemoList(TestCase):
+class TestMemoList(TestCase):
     # This class tests the memo_list view
 
     def test_memo_list_200(self):
@@ -58,7 +59,7 @@ class TestViewMemoList(TestCase):
         self.assertEqual(response.context["answers"][1], testanswer3)
 
 
-class TestViewAnswerSearch(TestCase):
+class TestAnswerSearch(TestCase):
     # This class tests the answer_search view
 
     def test_answer_search_200(self):
@@ -98,11 +99,13 @@ class TestViewAnswerSearch(TestCase):
                          )
 
 
-class TestViewAnswerDetail(TestCase):
+class TestAnswerDetail(TestCase):
     # This class tests the answer_detail view
 
     @classmethod
-    def SetUpTestData(cls):
+    def setUpTestData(cls):
+        # Sets up an Answer with pk = 1 (for easier querying)
+
         Answer.objects.create(id=1, title="testtitle")
 
     def test_answer_detail_valid_id(self):
@@ -115,25 +118,93 @@ class TestViewAnswerDetail(TestCase):
     def test_answer_detail_invalid_id(self):
         # Tests that answer_detail returns a 404 code for a non-existing answer
 
-        response = self.client.get("/faq/answer_detail/2/", follow=True)
+        response = self.client.get("/faq/answer_detail/2", follow=True)
 
         self.assertEqual(response.status_code, 404)
 
     def test_answer_detail_correct_context(self):
-        # Tests that answer_detail sends answer's informations through context
+        # Tests that answer_detail sends answer's information through context
 
-        response = self.client.get("/faq/answer_detail/1/", follow=True)
+        response = self.client.get("/faq/answer_detail/1", follow=True)
 
-        self.assertEqual(response.context['answer'].title, "testtitle")
+        self.assertEqual(response.context["answer"].title, "testtitle")
 
     def test_answer_detail_last_query(self):
         # Tests that answer_detail's context contains last user's query
 
-        response = self.client.get("/faq/answer_detail/1/", follow=True)
+        response = self.client.get("/faq/answer_detail/1", follow=True)
 
-        self.assertEqual(response.context['last_query'], "none")
+        self.assertEqual(response.context["last_query"], "none")
 
         self.client.get("/faq/answer_search/", {"query": "testquery"})
         response = self.client.get("/faq/answer_detail/1", follow=True)
 
-        self.assertEqual(response.context['last_query'], "testquery")
+        self.assertEqual(response.context["last_query"], "testquery")
+
+
+class TestAnswerValidate(TestCase):
+    # This class tests the answer_validate view
+
+    @classmethod
+    def setUpTestData(cls):
+        # Sets up an Answer with pk = 1 (for easier querying)
+
+        cls.testanswer = Answer.objects.create(id=1, title="testtitle")
+
+    def test_answer_validate_200(self):
+        # Tests that answer_validate returns a 200 code
+        response = self.client.post("/faq/answer_validate/",
+                                    {
+                                        'user_question': 'teststring',
+                                        'answer_id': 1,
+                                     },
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+
+    def test_answer_validate_creates_object(self):
+        # Tests that an answered question is created and linked to an answer
+        response = self.client.post('/faq/answer_validate/',
+                                    {
+                                        'user_question': 'teststring',
+                                        'answer_id': 1,
+                                    },
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        answered_question = AnsweredQuestion.objects.all()[0]
+        self.assertEqual(answered_question.validated_answer, self.testanswer)
+
+
+class TestQuestionAsk(TestCase):
+    # This class tests the question_ask view
+
+    def test_question_ask_200(self):
+        response = self.client.post("/faq/question_ask/",
+                                    {'content': "testcontent",}
+                                    )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_question_ask_creates_object(self):
+        response = self.client.post("/faq/question_ask/",
+                                    {
+                                        'content': "testcontent",
+                                        'mail': "test@mail.com"
+                                    }
+                                    )
+
+        self.assertEqual(Question.objects.get(content="testcontent").mail,
+                         'test@mail.com'
+                         )
+
+    def test_question_ask_sends_mail(self):
+        self.assertEqual(len(mail.outbox), 0)
+
+        response = self.client.post("/faq/question_ask/",
+                                    {'content': "testcontent", }
+                                    )
+
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_question_ask_get_redirects(self):
+        response = self.client.get("/faq/question_ask/")
+
+        self.assertRedirects(response, "/faq/landing/")
