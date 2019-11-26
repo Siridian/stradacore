@@ -1,0 +1,19 @@
+language: python
+python:
+  - '3.6'
+
+before_script:
+  - pip install pipenv
+  - pipenv install
+
+env: DJANGO_SETTINGS_MODULE="stradacore.settings.travis"
+
+services:
+  - postgresql
+
+script:
+  - pipenv run python manage.py test
+
+branches:
+  only:
+    - master
