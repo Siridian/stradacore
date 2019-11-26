@@ -16,7 +16,7 @@
     </div>
   </header>
 
-  <!-- Page Content -->
+  <!-- Search form -->
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto" >
@@ -43,6 +43,41 @@
           </div>
         {% endif %}
       </div>
+    </div>
+  </div>
+
+  <!-- Search Result -->
+  <div class="container">
+    <div class="row">
+    {% for meal in meals %}
+
+      {% if len(meal) == 1 %}
+        <div class="col-lg-8 col-md-8 mx-auto" >
+          {{ meal[0].title }}
+          {{ meal[0].directions }}
+          {{ meal[0].ingredients }}
+        </div>
+
+      {% elif len(meal) == 2 %}
+        {% for recipe in meal %}
+          <div class="col-lg-6 col-md-6 mx-auto" >
+            {{ recipe.title }}
+            {{ recipe.directions }}
+            {{ recipe.ingredients }}
+          </div>
+        {% endfor %}
+
+      {% else %}
+        {% for recipe in meal %}
+          <div class="col-lg-4 col-md-4 mx-auto" >
+            {{ recipe.title }}
+            {{ recipe.directions }}
+            {{ recipe.ingredients }}
+          </div>
+        {% endfor %}
+
+      {% endif %}
+    {% endfor %}
     </div>
   </div>
 
