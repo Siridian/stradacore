@@ -12,3 +12,7 @@ DATABASES = {
         'PORT': '',
     },
 }
+
+EMAIL_HOST_USER = "versustesting@gmail.com"
+EMAIL_HOST_PASSWORD = "retenir2"
+NOTIFIED_TARGET = "victor.sorba@gmail.com"
