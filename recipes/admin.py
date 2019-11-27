@@ -19,6 +19,6 @@ class RecipeIngredientInline(admin.TabularInline):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    fields = ('name', 'directions', 'type')
+    fields = ('name', 'directions', 'type', 'pdf_file')
     inlines = (RecipeIngredientInline,)
 

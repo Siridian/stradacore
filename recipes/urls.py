@@ -8,5 +8,8 @@ from recipes import views
 
 urlpatterns = [
     path(r'landing/', views.landing, name="landing"),
-    path(r'recipes_search/', views.recipes_search, name="recipes_search"),
+    path(r'recipe_download/<int:recipe_id>',
+         views.recipe_download,
+         name="recipe_download"
+    )
     ]

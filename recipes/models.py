@@ -70,6 +70,10 @@ class Recipe(models.Model):
         default=MAIN_COURSE,
     )
     ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient")
+    pdf_file = models.FileField("Fichier PDF",
+                                upload_to="recipes_pdfs/",
+                                blank=True
+    )
 
     def __str__(self):
         return self.name

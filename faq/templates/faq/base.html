@@ -12,11 +12,13 @@
 
   {% load static %}
 
+  <link href="{% static 'faq/img/favicon.png' %}" rel="icon" type="image/png">
+
   <!-- Bootstrap core CSS -->
   <link href="{% static 'faq/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
   <!-- Custom fonts for this template -->
-  <link href="{% static 'faq/vendor/fontawesome-free/css/all.min.css" rel="stylesheet' %}" type="text/css">
+  <link href="{% static 'faq/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
   <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
@@ -63,6 +65,9 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <p class="copyright text-muted">Copyright &copy; Victor Sorba pour A Strada di u Core 2019</p>
+        </div>
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <p class="copyright text-muted">Theme : Clean Blog, available on <a href="https://startbootstrap.com/">Start Bootstrap</a></p>
         </div>
         <div class="col-lg-12 col-md-12 mx-auto text-center">
           <img src="{% static 'faq/img/logo_ssr.jpg' %}" />

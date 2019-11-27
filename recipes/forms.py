@@ -28,9 +28,8 @@ class RecipeSearchForm(forms.Form):
     def clean_course_options(self):
         # Makes sure at least one course option has been selected
         data = self.cleaned_data['course_options']
-        print("alertdata")
-        print(data)
         if not data:
-            raise forms.ValidationError("Au moins un type de plat doit être présent !")
+            raise forms.ValidationError("Au moins un type de plat doit être "
+                                        "présent !")
 
         return data
