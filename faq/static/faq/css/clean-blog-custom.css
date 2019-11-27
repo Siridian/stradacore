@@ -24,6 +24,15 @@ img { max-width: 100%; height: auto; }
     border: 2px solid #0085a1;
     height: stretch;
     border-radius: 10px;
+    font-size: 0.8em;
+}
+
+.recipe-container h5{
+    margin-top: 20px;
+}
+
+.recipe-container p{
+    margin: 10px;
 }
 
 i {
