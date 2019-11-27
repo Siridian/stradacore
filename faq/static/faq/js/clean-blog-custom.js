@@ -50,7 +50,6 @@ $(".fa-download").on('click', function(event){
         a.click();
         window.URL.revokeObjectURL(url);
       })
-      .catch(() => alert('oh no!'));
 })
 
 $(".fa-repeat").on('click', function(event){
@@ -67,7 +66,6 @@ $(".fa-repeat").on('click', function(event){
             }
             else{
                 recipe_ids += response['id'] + " "
-                console.log(recipe_ids)
                 $($(recipe_container).children("h3")[0]).text(response['name']);
                 $($(recipe_container).children("div")[1]).html(response['directions']);
                 $($(recipe_container).children("div")[0]).children().remove();

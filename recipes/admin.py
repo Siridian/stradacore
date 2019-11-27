@@ -17,7 +17,6 @@ class IngredientAdmin(admin.ModelAdmin):
     radio_fields = {"type": admin.VERTICAL}
 
 
-
 class RecipeIngredientInline(admin.TabularInline):
     autocomplete_fields = ['ingredient']
     fields = ['ingredient', 'quantity', 'unit']
@@ -27,7 +26,7 @@ class RecipeIngredientInline(admin.TabularInline):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    fields = ('name', 'directions', 'pdf_file')
+    fields = ('name', 'directions', 'type', 'pdf_file')
     radio_fields = {"type": admin.VERTICAL}
     inlines = (RecipeIngredientInline,)
 
