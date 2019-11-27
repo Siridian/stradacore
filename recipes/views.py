@@ -85,7 +85,7 @@ def recipe_refresh(request):
             if ri.quantity:
                 ingredient_list.append("{0} : {1} {2}".format(ri.ingredient.name,
                                                               '{0:g}'.format(ri.quantity),
-                                                              ri.ingredient.unit
+                                                              ri.unit
                                                               )
                                        )
             else:

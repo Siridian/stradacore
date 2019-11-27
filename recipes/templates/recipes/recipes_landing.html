@@ -71,7 +71,7 @@
           <h5>Ingrédients :</h5>
           <div>
             {% for ri in recipe.recipeingredient_set.all %}
-              <p>{{ ri.ingredient.name }}{% if ri.quantity %} : {{ ri.quantity|floatformat }} {{ ri.ingredient.unit }}{% endif %}</p>
+              <p>{{ ri.ingredient.name }}{% if ri.quantity %} : {{ ri.quantity|floatformat }} {{ ri.unit }}{% endif %}</p>
             {% endfor %}
           </div>
           <h5>Instructions :</h5>
