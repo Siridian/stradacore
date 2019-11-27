@@ -11,5 +11,6 @@ urlpatterns = [
     path(r'recipe_download/<int:recipe_id>',
          views.recipe_download,
          name="recipe_download"
-    )
+    ),
+    path(r'recipe_refresh/', views.recipe_refresh, name="recipe_refresh")
     ]

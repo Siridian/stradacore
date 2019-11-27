@@ -52,3 +52,27 @@ $(".fa-download").on('click', function(event){
       })
       .catch(() => alert('oh no!'));
 })
+
+$(".fa-repeat").on('click', function(event){
+    let recipe_container = $(event.target).parent()[0];
+    $.post(
+        "/recipes/recipe_refresh/",
+        {
+            "recipe_type": recipe_container.id[0],
+            "recipe_ids": recipe_ids
+        },
+        function(response){
+            if(response['status'] == 'out'){
+                $(recipe_container).html("<h3>Aucune autre recette n'est disponible !</h3>")
+            }
+            else{
+                recipe_ids += response['id'] + " "
+                console.log(recipe_ids)
+                $($(recipe_container).children("h3")[0]).text(response['name']);
+                $($(recipe_container).children("div")[1]).html(response['directions']);
+                $($(recipe_container).children("div")[0]).children().remove();
+                response["ingredients"].forEach(element => $($(recipe_container).children("div")[0]).append("<p>" + element + "</p>"));
+            }
+        }
+     )
+})

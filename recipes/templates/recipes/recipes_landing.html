@@ -61,25 +61,31 @@
     <h2>Menu n°{{ forloop.counter }}</h2>
     <div class="row meal-container">
       {% for recipe in meal %}
-        {% if meal|length == 1 %} <div class="col-lg-8 col-md-8 mx-auto recipe-container" >
-        {% elif meal|length == 2 %} <div class="col-lg-6 col-md-6 mx-auto recipe-container" >
-        {% else %} <div class="col-lg-4 col-md-4 recipe-container" > {% endif %}
+        <div class="{% if meal|length == 1 %} col-lg-8
+        {% elif meal|length == 2 %} col-lg-6
+        {% else %} col-lg-4 mx-auto recipe-container
+        {% endif %} mx-auto recipe-container"
+        id="{{ recipe.type }}{{ recipe.id }}">
           <h3 class="text-center">{{ recipe.name }}</h3>
           <h5 class="text-center" style="color:#0085a1;">{{ recipe.get_type_display }}</h5>
           <h5>Ingrédients :</h5>
-          {% for ri in recipe.recipeingredient_set.all %}
-            <p>{{ ri.ingredient.name }}{% if ri.quantity %} : {{ ri.quantity|floatformat }} {{ ri.ingredient.unit }}{% endif %}</p>
-          {% endfor %}
+          <div>
+            {% for ri in recipe.recipeingredient_set.all %}
+              <p>{{ ri.ingredient.name }}{% if ri.quantity %} : {{ ri.quantity|floatformat }} {{ ri.ingredient.unit }}{% endif %}</p>
+            {% endfor %}
+          </div>
           <h5>Instructions :</h5>
-          <p>{{ recipe.directions|safe }}</p>
+          <div>{{ recipe.directions|safe }}</div>
           <i class="fa fa-repeat">Trouver une autre recette</i>
           {% if recipe.pdf_file %}
-          <i class="fa fa-download"  id="{{ recipe.pdf_file }}">
-            <input type="hidden" name="variable" value="{{ recipe.id }}">
-            Télécharger la recette
-          </i>
+          <p>
+            <i class="fa fa-download" id="{{ recipe.pdf_file }}">
+              <input type="hidden" name="variable" value="{{ recipe.id }}">
+              Télécharger la recette
+            </i>
+          </p>
           {% endif %}
-          </div>
+        </div>
       {% endfor %}
     </div>
 
@@ -87,5 +93,14 @@
   </div>
 
   {% endif %}
+
+<script>
+  var recipe_ids = ""
+  {% for meal in meal_list %}
+    {% for recipe in meal %}
+      recipe_ids += "{{ recipe.id }} "
+    {% endfor%}
+  {% endfor %}
+</script>
 
 {% endblock %}
