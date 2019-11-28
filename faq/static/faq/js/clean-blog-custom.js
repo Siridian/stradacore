@@ -69,6 +69,9 @@ $(".fa-repeat").on('click', function(event){
                 $($(recipe_container).children("h3")[0]).text(response['name']);
                 $($(recipe_container).children("div")[1]).html(response['directions']);
                 $($(recipe_container).children("div")[0]).children().remove();
+                download = $(recipe_container).find(".fa-download")[0];
+                download.id = response['pdf_file'];
+                $(download).find("input")[0].value = response['id'];
                 response["ingredients"].forEach(element => $($(recipe_container).children("div")[0]).append("<p>" + element + "</p>"));
             }
         }

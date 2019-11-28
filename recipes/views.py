@@ -84,7 +84,8 @@ def recipe_refresh(request):
             "id": remaining_recipe.id,
             "name": remaining_recipe.name,
             "ingredients": str_list,
-            "directions": str(remaining_recipe.directions)
+            "directions": str(remaining_recipe.directions),
+            "pdf_file": str(remaining_recipe.pdf_file)
         }
 
         return JsonResponse(data)
