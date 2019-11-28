@@ -12,6 +12,8 @@ django-ckeditor = "*"
 pillow = "*"
 gunicorn = "*"
 sentry-sdk = "*"
+fpdf = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.6"

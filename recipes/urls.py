@@ -12,5 +12,6 @@ urlpatterns = [
          views.recipe_download,
          name="recipe_download"
     ),
-    path(r'recipe_refresh/', views.recipe_refresh, name="recipe_refresh")
+    path(r'recipe_refresh/', views.recipe_refresh, name="recipe_refresh"),
+    path(r'grocery_list/', views.grocery_list, name="grocery_list")
     ]

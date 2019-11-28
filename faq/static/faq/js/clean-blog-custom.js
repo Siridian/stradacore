@@ -36,8 +36,8 @@ $("#unsatisfy").on('click', function(){
 
 $(".fa-download").on('click', function(event){
     console.log(event.target)
-    let recipe_id = $(event.target).find("input")[0].value;
-    let recipe_file_name = event.target.id.split("/")[1]
+    recipe_id = $(event.target).find("input")[0].value;
+    recipe_file_name = event.target.id.split("/")[1]
     fetch('/recipes/recipe_download/' + recipe_id)
       .then(resp => resp.blob())
       .then(blob => {
@@ -53,7 +53,7 @@ $(".fa-download").on('click', function(event){
 })
 
 $(".fa-repeat").on('click', function(event){
-    let recipe_container = $(event.target).parent()[0];
+    recipe_container = $(event.target).parent()[0];
     $.post(
         "/recipes/recipe_refresh/",
         {
@@ -74,3 +74,47 @@ $(".fa-repeat").on('click', function(event){
         }
      )
 })
+
+$("#download-groceries-button").on('click', function(event){
+    recipe_list = ""
+    checkboxes = $("input:checked");
+    for (i = 0; i < checkboxes.length; i++) {
+    recipe_list += checkboxes[i].id +",";
+    }
+    if (recipe_list != ""){
+        recipe_list = recipe_list.slice(0, -1);
+        var fetchInit = {headers:{"X-CSRFToken": csrftoken}, method: 'POST', body: recipe_list};
+        fetch('/recipes/grocery_list/', fetchInit)
+          .then(resp => resp.blob())
+          .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = "liste_de_courses.pdf";
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            })
+    }
+
+})
+
+function openMeal(evt, mealNumber) {
+  var i, mealcontainer, tablinks;
+
+  mealcontainer = $(".meal-container");
+  for (i = 0; i < mealcontainer.length; i++) {
+    mealcontainer[i].style.display = "none";
+  }
+
+  tablinks = $(".tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  document.getElementById(mealNumber).style.display = "";
+  evt.currentTarget.className += " active";
+}
+
+$(".tablinks")[0].click()

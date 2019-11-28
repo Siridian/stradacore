@@ -6,10 +6,10 @@ and adds Ingredients as Recipe inlines
 
 from django.contrib import admin
 
-from recipes.models import IngredientType, Ingredient, Recipe, RecipeIngredient
+from recipes.models import IngredientType, Ingredient, Recipe, \
+    RecipeIngredient, PDFHolder
 
 admin.site.register(IngredientType)
-
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):

@@ -8,7 +8,11 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 from recipes.forms import RecipeSearchForm
-from recipes.models import Recipe
+from recipes.models import Recipe, IngredientType, PDFHolder, RecipeIngredient
+
+from fpdf import FPDF
+
+from stradacore import settings
 
 
 def landing(request):
@@ -27,7 +31,6 @@ def landing(request):
         form = RecipeSearchForm(request.POST)
         if form.is_valid():
             meal_number = int(form.cleaned_data['meal_number'])
-
             if "F" in form.cleaned_data['course_options']:
                 fcs = sample(list(Recipe.objects.filter(type="F")),
                              meal_number)
@@ -55,47 +58,47 @@ def recipe_download(request, recipe_id):
     # AJAX downloads a recipe's pdf file
     if Recipe.objects.get(id=recipe_id).pdf_file:
         pdf_file = Recipe.objects.get(id=recipe_id).pdf_file
-        file_name = pdf_file.name.split('/')[-1]
         response = HttpResponse(pdf_file, content_type='text/plain')
-        response['Content-Disposition'] = 'attachment; filename=%s' % file_name
-        print(file_name)
 
         return response
 
 
 def recipe_refresh(request):
-    #
+    """
+    AJAX sends data about a random recipe of a given type, selected from those
+    that has not yet been displayed on the page that sent the request
+    """
     if request.method == "POST":
-        recipe_type = request.POST.get("recipe_type")
-        recipe_ids = request.POST.get("recipe_ids")
+        type = request.POST.get("recipe_type")
+        ids = request.POST.get("recipe_ids")
+        remaining_recipe = Recipe.objects.get_remaining_recipes(type, ids)
 
-        same_type_recipes = [recipe.id
-                             for recipe
-                             in Recipe.objects.filter(type=recipe_type)
-                             ]
-        recipe_ids_int = (int(n) for n in recipe_ids.split())
-        remaining_recipes = list(set(same_type_recipes) - set(recipe_ids_int))
-        if not remaining_recipes:
+        if not remaining_recipe:
             data = {"status": "out"}
             return JsonResponse(data)
 
-        selected_recipe = Recipe.objects.get(pk=sample(remaining_recipes, 1)[0])
-        ingredient_list = []
-        for ri in selected_recipe.recipeingredient_set.all():
-            if ri.quantity:
-                ingredient_list.append("{0} : {1} {2}".format(ri.ingredient.name,
-                                                              '{0:g}'.format(ri.quantity),
-                                                              ri.unit
-                                                              )
-                                       )
-            else:
-                ingredient_list.append(ri.ingredient.name)
+        str_list = Recipe.objects.stringify_recipe_ingredients(remaining_recipe)
+
         data = {
             "status": "ok",
-            "id": selected_recipe.id,
-            "name": selected_recipe.name,
-            "ingredients": ingredient_list,
-            "directions": str(selected_recipe.directions)
+            "id": remaining_recipe.id,
+            "name": remaining_recipe.name,
+            "ingredients": str_list,
+            "directions": str(remaining_recipe.directions)
         }
 
         return JsonResponse(data)
+
+
+def grocery_list(request):
+    # AJAX creates a grocery list from given lists of recipes and download it
+
+    if request.method == "POST":
+        string_array = request.body.decode("utf-8").split(",")
+
+        srt_ingr = Recipe.objects.sort_recipe_ingredients(string_array)
+        agg_ingr = RecipeIngredient.objects.aggregate_recipe_ingredients(srt_ingr)
+        file = PDFHolder.objects.create_pdf(agg_ingr)
+
+        response = HttpResponse(file, content_type='application/pdf')
+        return response

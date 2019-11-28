@@ -31,7 +31,7 @@
               <label for="{{ form.course_options.id_for_label }}" class="control-label">Quel(s) plat(s) doivent figurer au menu de chaque repas ?</label>
               {{ form.course_options }}
             </div>
-            <button type="submit" name="action" value="question" class="btn btn-success">C'est parti !</button>
+            <button type="submit" name="action" value="question" class="btn btn-primary">C'est parti !</button>
         </form>
         {% if errors %}
           <div>
@@ -51,46 +51,52 @@
 
   <!-- Search Result -->
   <div class="container">
-    <div class ="row">
-      <div class="col-lg-12 col-md-12 text-center">
-        <h2></h2>
-      </div>
-    </div>
-
-    {% for meal in meal_list %}
-    <h2>Menu n°{{ forloop.counter }}</h2>
-    <div class="row meal-container">
-      {% for recipe in meal %}
-        <div class="{% if meal|length == 1 %} col-lg-8
-        {% elif meal|length == 2 %} col-lg-6
-        {% else %} col-lg-4 mx-auto recipe-container
-        {% endif %} mx-auto recipe-container"
-        id="{{ recipe.type }}{{ recipe.id }}">
-          <h3 class="text-center">{{ recipe.name }}</h3>
-          <h5 class="text-center" style="color:#0085a1;">{{ recipe.get_type_display }}</h5>
-          <h5>Ingrédients :</h5>
-          <div>
-            {% for ri in recipe.recipeingredient_set.all %}
-              <p>{{ ri.ingredient.name }}{% if ri.quantity %} : {{ ri.quantity|floatformat }} {{ ri.unit }}{% endif %}</p>
-            {% endfor %}
-          </div>
-          <h5>Instructions :</h5>
-          <div>{{ recipe.directions|safe }}</div>
-          <i class="fa fa-repeat">Trouver une autre recette</i>
-          {% if recipe.pdf_file %}
-          <p>
-            <i class="fa fa-download" id="{{ recipe.pdf_file }}">
-              <input type="hidden" name="variable" value="{{ recipe.id }}">
-              Télécharger la recette
-            </i>
-          </p>
-          {% endif %}
-        </div>
+    <div class="tab">
+      {% for meal in meal_list %}
+        <button class="tablinks" onclick="openMeal(event, 'Meal{{ forloop.counter }}')">Menu n°{{ forloop.counter }}</button>
       {% endfor %}
     </div>
 
-    {% endfor %}
-  </div>
+      {% for meal in meal_list %}
+      <div class="row meal-container" id="Meal{{ forloop.counter }}">
+        {% for recipe in meal %}
+          <div class="{% if meal|length == 1 %} col-lg-8
+          {% elif meal|length == 2 %} col-lg-6
+          {% else %} col-lg-4 mx-auto recipe-container
+          {% endif %} mx-auto recipe-container"
+          id="{{ recipe.type }}{{ recipe.id }}">
+            <h3 class="text-center">{{ recipe.name }}</h3>
+            <h5 class="text-center" style="color:#0085a1;">{{ recipe.get_type_display }}</h5>
+            <h5>Ingrédients :</h5>
+            <div>
+              {% for ri in recipe.recipeingredient_set.all %}
+                <p>{{ ri.ingredient.name }}{% if ri.quantity %} : {{ ri.quantity|floatformat }} {{ ri.unit }}{% endif %}</p>
+              {% endfor %}
+            </div>
+            <h5>Instructions :</h5>
+            <div>{{ recipe.directions|safe }}</div>
+            <i class="fa fa-repeat">Trouver une autre recette</i>
+            {% if recipe.pdf_file %}
+            <p>
+              <i class="fa fa-download" id="{{ recipe.pdf_file }}">
+                <input type="hidden" name="variable" value="{{ recipe.id }}">
+                Télécharger la recette
+              </i>
+            </p>
+            {% endif %}
+            <p>
+              <input type="checkbox" id="{{ recipe.name }}">
+              <label for="{{ recipe.name }}">Ajouter à la liste de courses</label>
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% endfor %}
+
+    <button type="submit" name="action" id="download-groceries-button" class="btn btn-primary col-lg-12">Télécharger la liste des courses</button>
+    </div>
+
 
   {% endif %}
 

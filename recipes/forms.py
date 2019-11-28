@@ -24,12 +24,3 @@ class RecipeSearchForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         choices=_course_choices
     )
-
-    def clean_course_options(self):
-        # Makes sure at least one course option has been selected
-        data = self.cleaned_data['course_options']
-        if not data:
-            raise forms.ValidationError("Au moins un type de plat doit être "
-                                        "présent !")
-
-        return data
