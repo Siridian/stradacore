@@ -6,13 +6,15 @@ from django.test import TestCase
 from recipes.models import *
 
 
-class TestRecipe(TestCase):
-    # This class tests the Tag and TagManager models
+class TestManagers(TestCase):
+    # This class tests the managers of the recipes models
 
     @classmethod
     def setUpTestData(cls):
         # Sets up recipes of all types
         cls.ingredient_typeA = IngredientType.objects.create(name="ITA")
+        cls.ingredient_typeB = IngredientType.objects.create(name="ITB")
+
         cls.recipeA = Recipe.objects.create(name="recipeA",
                                             directions="testdirections",
                                             type="F",
@@ -48,29 +50,76 @@ class TestRecipe(TestCase):
         cls.ingredientA = Ingredient.objects.create(name="ingredientA",
                                                     type=cls.ingredient_typeA
                                                     )
+        cls.ingredientB = Ingredient.objects.create(name="ingredientB",
+                                                    type=cls.ingredient_typeB
+                                                    )
+        cls.ingredientC = Ingredient.objects.create(name="ingredientC",
+                                                    type=cls.ingredient_typeA
+                                                    )
+        cls.ingredientD = Ingredient.objects.create(name="ingredientD",
+                                                    type=cls.ingredient_typeB
+                                                    )
+        cls.riA = RecipeIngredient.objects.create(recipe=cls.recipeA,
+                                                  ingredient=cls.ingredientA,
+                                                  quantity=5,
+                                                  unit="cl"
+                                                  )
+        cls.riB = RecipeIngredient.objects.create(recipe=cls.recipeB,
+                                                  ingredient=cls.ingredientB,
+                                                  quantity=5,
+                                                  unit="g"
+                                                  )
+        cls.riC = RecipeIngredient.objects.create(recipe=cls.recipeA,
+                                                  ingredient=cls.ingredientC
+                                                  )
+        cls.riD = RecipeIngredient.objects.create(recipe=cls.recipeB,
+                                                  ingredient=cls.ingredientD,
+                                                  quantity=5
+                                                  )
 
-    def test_recipe_attributes(self):
-        # Tests that recipe instance attributes are of the correct type
+    def test_sort_recipe_ingredients(self):
+        # Tests the sort_recipe_ingredients() method of the recipe manager
+        str_arr = ["recipeA", "recipeB", "recipeC", "recipeD"]
+        dic = Recipe.objects.sort_recipe_ingredients(str_arr)
 
-        self.assertTrue(isinstance(self.recipeA, Recipe))
-        self.assertEqual(type(self.recipeA.name), str)
-        self.assertEqual(type(self.recipeA.directions), str)
-        self.assertEqual(type(self.recipeA.type), str)
+        self.assertEqual(len(dic.keys()), 2)
+        self.assertEqual(dic["ITA"], [self.riA, self.riC])
+        self.assertEqual(dic["ITB"], [self.riB, self.riD])
+
+    def test_get_remaining_recipes(self):
+        # Tests the get_remaining_recipes() method of the recipe manager
+        id1 = self.recipeA.id
+        id2 = self.recipeE.id
+        self.assertEqual(Recipe.objects.get_remaining_recipes("F", [id1]),
+                         self.recipeE)
+        self.assertEqual(Recipe.objects.get_remaining_recipes("F", [id1, id2]),
+                         None)
+
+    def test_stringify_recipe_ingredients(self):
+        # Tests the stringify_recipe_ingredients() method of the recipe manager
+        str_arr = Recipe.objects.stringify_recipe_ingredients(self.recipeA)
+
+        self.assertEqual(str_arr[0], "ingredientA : 5 cl")
+        self.assertEqual(str_arr[1], "ingredientC")
 
     def test_max_meal_number(self):
-        # Tests that the max_meal_number() method of the recipe manager works
-
+        # Tests the max_meal_number() method of the recipe manager
         self.assertEqual(Recipe.objects.max_meal_number(3), 2)
         self.assertEqual(Recipe.objects.max_meal_number(1), 1)
 
-    def test_get_remaining_recipes(self):
+    def test_aggregate_recipe_ingredients(self):
         """
-        Tests that the get_remaining_recipes()
-        method of the recipe manager works
+        Tests the aggregate_recipe_ingredients() method of the recipe manager
         """
-        id1 = self.recipeA.id
-        id2 = self.recipeE.id
-        self.assertEqual(Recipe.objects.get_remaining_recipes("F",[id1]),
-                         self.recipeE)
-        self.assertEqual(Recipe.objects.get_remaining_recipes("F",[id1, id2]),
-                         None)
+        dic = {
+            "ITA": [self.riA, self.riB],
+            "ITB": [self.riC, self.riD],
+        }
+        new_dic = RecipeIngredient.objects.aggregate_recipe_ingredients(dic)
+        for key in new_dic:
+            print(new_dic[key])
+        self.assertEqual(len(new_dic.keys()), 2)
+        self.assertTrue("5cl ingredientA" in new_dic["ITA"])
+        self.assertTrue("5g ingredientB" in new_dic["ITA"])
+        self.assertTrue("ingredientC" in new_dic["ITB"])
+        self.assertTrue("5 ingredientD" in new_dic["ITB"])

@@ -81,6 +81,12 @@ class RecipeManager(models.Manager):
 class RecipeIngredientManager(models.Manager):
     # Contains the aggregate_recipe_ingredients() method
     def aggregate_recipe_ingredients(self, dic):
+        """
+        Takes a dict where each key is an ingredient type and returns an array
+        of RecipeIngredient objects. Returns a dict with similar structure,
+        except the arrays contains readable string versions of the recipe
+        ingredients. Duplicate ingredients are merged if their unit permits it.
+        """
         aggregated_ingredients = {}
         for count, section in enumerate(dic.values()):
             section_ingredients = set([ri.ingredient.name for ri in section])

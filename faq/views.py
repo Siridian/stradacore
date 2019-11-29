@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from faq.forms import QuestionForm, ParagraphErrorList
+from faq.forms import QuestionForm
 from .models import Answer, Tag, AnsweredQuestion
 from .utils import create_question
 
@@ -102,7 +102,7 @@ def answer_validate(request):
 def question_ask(request):
     # Creates a Question object in db, using a Question Form
     if request.method == 'POST':
-        form = QuestionForm(request.POST, error_class=ParagraphErrorList)
+        form = QuestionForm(request.POST)
         if form.is_valid():
             content = form.cleaned_data['content']
             mail = form.cleaned_data['mail']
