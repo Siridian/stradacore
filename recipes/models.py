@@ -65,6 +65,19 @@ class RecipeManager(models.Manager):
 
         return ingredient_list
 
+    def max_meal_number(self, absolute_max):
+        """
+        Returns the lowest number between absolute_max and the number of
+        matching recipes for each ingredient type
+        """
+        max_meal_number = min(
+            len(self.filter(type="F")),
+            len(self.filter(type="M")),
+            len(self.filter(type="D")),
+            absolute_max
+        )
+        return max_meal_number
+
 
 class RecipeIngredientManager(models.Manager):
     # Contains the aggregate_recipe_ingredients() method

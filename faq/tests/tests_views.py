@@ -195,15 +195,6 @@ class TestQuestionAsk(TestCase):
                          'test@mail.com'
                          )
 
-    def test_question_ask_sends_mail(self):
-        self.assertEqual(len(mail.outbox), 0)
-
-        response = self.client.post("/faq/question_ask/",
-                                    {'content': "testcontent", }
-                                    )
-
-        self.assertEqual(len(mail.outbox), 1)
-
     def test_question_ask_get_redirects(self):
         response = self.client.get("/faq/question_ask/")
 
