@@ -37,8 +37,7 @@ class RecipeManager(models.Manager):
     def get_remaining_recipes(self, type, ids):
         # Returns all recipes of a given type whose id is not in a list of ids
         same_type_recipes = [recipe.id for recipe in self.filter(type=type)]
-        recipe_ids_int = (int(n) for n in ids.split())
-        remaining_recipes = list(set(same_type_recipes) - set(recipe_ids_int))
+        remaining_recipes = list(set(same_type_recipes) - set(ids))
         if remaining_recipes:
             selected_recipe = Recipe.objects.get(
                 pk=sample(remaining_recipes, 1)[0])

@@ -71,7 +71,8 @@ def recipe_refresh(request):
     if request.method == "POST":
         type = request.POST.get("recipe_type")
         ids = request.POST.get("recipe_ids")
-        remaining_recipe = Recipe.objects.get_remaining_recipes(type, ids)
+        id_array = (int(n) for n in ids.split())
+        remaining_recipe = Recipe.objects.get_remaining_recipes(type, id_array)
 
         if not remaining_recipe:
             data = {"status": "out"}
