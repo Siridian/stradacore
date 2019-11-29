@@ -49,7 +49,7 @@ def landing(request):
                 if "dts" in locals(): meal.append(dts[x])
                 meal_list.append(meal)
 
-            context['meal_list'] = meal_list
+            context["meal_list"] = meal_list
 
     return render(request, 'recipes/recipes_landing.html', context)
 

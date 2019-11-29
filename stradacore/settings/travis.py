@@ -10,5 +10,8 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'travis_test_db',
+        },
     },
 }
