@@ -1,0 +1,55 @@
+{% extends 'faq/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Infos techniques</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <h3>Qu'est ce que le Machine Learning ?</h3>
+            <p>
+                Ce site utilise des technologies de Machine Learning pour améliorer ses performances. Lorsque vous ne faîtes part de vos retours et questions,
+                une base de données enregistre les résultats proposés par le système et les compare à vos attentes. C'est tout le système qui apprend donc de vos retours, et
+                améliore progressivement la précision de ses réponses.
+                Les données traitées sont bien entendu entièrement sécurisées, de sorte à ce que seul le personnel du service puisse avoir accès à ce que vous souhaitez lui communiquer (et rien d'autre).
+            </p>
+            <h3>En quoi le service de cardiologie de Bastia est il concerné ?</h3>
+            <p>
+                A terme, l'ensemble des techniques d'apprentissage automatique pourra venir aider les soignants dans chaque aspect technique de la vie du centre.
+                En analysant l'évolution de certaines données vitales de patients souhaitant tester le programme, il est possible d'accroître la vitesse et l'exactitude des diagnostics.
+                De plus, des retours scientifiques sur l'efficacité des différentes activités et traitement pourront grandement aider à les adapter aux besoins de chaque patient le souhaitant.
+                A terme, c'est l'ensemble des connaissances médicales en cardiologie qui bénéficieront des résultats proposés par cet outil.
+            </p>
+            <h3>Est-ce une première dans les services de santé ?</h3>
+            <p>
+                Le Machine Learning, et tout le groupe des Data Sciences en général, sont en plein essor ces dernières années. Grâce à de nouveaux outils informatiques, il est désormais possible
+                de mettre ces connaissances au service de la santé publique. Plusieurs établissements intègrent déjà de tels procédés dans leurs pratiques, comme démontré dans l'article en bas de page.
+                Le site astradadiucore.fr contribue lui aussi à explorer les applications de telles technologies dans un cadre éthique, d'intérêt publique.
+            </p>
+          <a href="https://www.journaldunet.com/solutions/expert/71142/la-transformation-du-secteur-de-la-sante-par-l-ia-et-le-machine-learning.shtml">
+              Découvrez les progrès de la santé en France grâce au machine learning dans cet article
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+{% endblock %}

@@ -8,11 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 from recipes.forms import RecipeSearchForm
-from recipes.models import Recipe, IngredientType, PDFHolder, RecipeIngredient
-
-from fpdf import FPDF
-
-from stradacore import settings
+from recipes.models import Recipe, PDFHolder, RecipeIngredient
 
 
 def landing(request):

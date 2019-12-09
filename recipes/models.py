@@ -8,7 +8,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from fpdf import FPDF
 
-from stradacore import settings
+from django.conf import settings
 
 
 class RecipeManager(models.Manager):

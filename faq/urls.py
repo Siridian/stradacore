@@ -14,4 +14,5 @@ urlpatterns = [
     path(r'answer_detail/<int:answer_id>', views.answer_detail, name="answer_detail"),
     path(r'answer_validate/', views.answer_validate, name="answer_validate"),
     path(r'question_ask/', views.question_ask, name="question_ask"),
+    path(r'ml_info/', views.ml_info, name="ml_info"),
     ]

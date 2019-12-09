@@ -119,3 +119,8 @@ def question_ask(request):
 
     else:
         return redirect("faq:landing")
+
+
+def ml_info(request):
+    # Displays machine learning info page
+    return render(request, 'faq/ml_info.html')

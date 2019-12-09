@@ -1,3 +1,5 @@
-"Un utilisateur du service Question-Réponse a posé une question n'ayant pas encore de réponse : \n \n"
+Un utilisateur du service Question-Réponse a posé une question n'ayant pas encore de réponse :
+
 {{ content }}
-"\n \n Vous pouvez la retrouver sur l'interface d'administration du site."
+
+Vous pouvez la retrouver sur l'interface d'administration du site.
