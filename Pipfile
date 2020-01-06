@@ -14,6 +14,7 @@ gunicorn = "*"
 sentry-sdk = "*"
 fpdf = "*"
 coverage = "*"
+unidecode = "*"
 
 [requires]
 python_version = "3.6"

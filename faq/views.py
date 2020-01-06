@@ -11,6 +11,9 @@ from faq.forms import QuestionForm
 from .models import Answer, Tag, AnsweredQuestion
 from .utils import create_question
 
+from unidecode import unidecode
+
+
 
 def index(request):
     # Displays home page
@@ -36,7 +39,7 @@ def answer_search(request):
     Detects tags a in a user query
     and displays associated answers sorted by relevance
     """
-    query = request.GET.get('query')
+    query = unidecode(request.GET.get('query'))
     request.session['last_query'] = query
 
     context = {
@@ -62,6 +65,7 @@ def answer_search(request):
         answers = paginator.page(paginator.num_pages)
 
     context['answers'] = answers
+    context['query'] = query
 
     return render(request, 'faq/answer_list.html', context)
 

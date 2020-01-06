@@ -15,7 +15,7 @@ def create_question(content, mail):
     question = Question.objects.create(content=content, mail=mail)
     send_mail(
         "Nouvelle question posée sur astradadiucore.fr",
-        render_to_string("faq/mail_content.txt"),
+        render_to_string("faq/mail_content.txt", {"content": content}),
         settings.EMAIL_HOST_USER,
         settings.NOTIFIED_TARGET
     )
