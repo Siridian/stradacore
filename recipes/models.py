@@ -99,7 +99,7 @@ class RecipeIngredientManager(models.Manager):
                 if matching_quantities == [None]:
                     section_grocery.append(name)
 
-                elif {"cl", "g", ""} & set(matching_units) == {}:
+                elif {"cl", "g", ""} & set(matching_units) == set():
                     section_grocery.append(name)
 
                 else:
