@@ -99,6 +99,9 @@ class RecipeIngredientManager(models.Manager):
                 if matching_quantities == [None]:
                     section_grocery.append(name)
 
+                elif {"cl", "g", ""} & set(matching_units) == {}:
+                    section_grocery.append(name)
+
                 else:
                     for unit in ["cl", "g", ""]:
                         if unit in matching_units:
@@ -107,8 +110,6 @@ class RecipeIngredientManager(models.Manager):
                             section_grocery.append(
                                 "{0:g}{1} {2}".format(quant, unit, name)
                             )
-                        else:
-                            section_grocery.append(name)
 
             aggregated_ingredients[[*dic][count]] = section_grocery
 
