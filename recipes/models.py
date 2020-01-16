@@ -107,6 +107,8 @@ class RecipeIngredientManager(models.Manager):
                             section_grocery.append(
                                 "{0:g}{1} {2}".format(quant, unit, name)
                             )
+                        else:
+                            section_grocery.append(name)
 
             aggregated_ingredients[[*dic][count]] = section_grocery
 
