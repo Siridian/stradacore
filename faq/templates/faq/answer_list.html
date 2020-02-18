@@ -28,13 +28,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto text-center">
-            <h4 class="text-center question_tag">Aucune réponse ne correspond à votre question. Essayez de nouveau, en changeant les termes employés.</h4>
-          </div>
-          <div class="col-lg-8 col-md-10 mx-auto text-left">
-            <p style="margin-bottom: 20px;">Vous pouvez également envoyer votre question en détail directement au service. Vous pouvez préciser votre adresse mail pour être notifié.e dès que la réponse sera en ligne.</p>
+            <h4 class="text-center question_tag">Aucune réponse ne correspond à votre question. Essayez de nouveau en changeant les termes employés.</h4>
           </div>
         </div>
-        {% include "faq/question_form.html" %}
       </div>
 
     {% else %}
@@ -55,7 +51,6 @@
                   </p>
                 </a>
               </div>
-              <hr>
 
             {% endfor %}
 
@@ -89,6 +84,17 @@
       </div>
     </div>
     {% endif %}
+
+
+    <hr>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-8 mx-auto">
+          <p style="margin-bottom: 20px;">Vous pouvez également envoyer votre question en détail directement au service. Vous pouvez préciser votre adresse mail pour être notifié.e dès que la réponse sera en ligne.</p>
+        </div>
+      </div>
+      {% include "faq/question_form.html" %}
+    </div>
 
   <hr>
 {% endblock %}
