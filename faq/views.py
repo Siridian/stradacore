@@ -14,7 +14,6 @@ from .utils import create_question
 from unidecode import unidecode
 
 
-
 def index(request):
     # Displays home page
     return render(request, 'faq/index.html')

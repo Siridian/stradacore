@@ -13,6 +13,7 @@ urlpatterns = [
     re_path(r'^$', views.index, name="index"),
     path('faq/', include(('faq.urls', 'faq'), namespace="faq")),
     path('recipes/', include(('recipes.urls', 'recipes'), namespace="recipes")),
+    path('videos/', include(('videos.urls', 'videos'), namespace="videos")),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
